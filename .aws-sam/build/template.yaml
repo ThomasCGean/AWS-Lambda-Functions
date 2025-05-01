@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Secure Banking App - GetStatementLambda
+Globals:
+  Function:
+    Timeout: 10
+    Runtime: python3.11
+Resources:
+  GetStatementFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: GetStatementLambda
+      Handler: app.lambda_handler
+      CodeUri: GetStatementFunction
+      MemorySize: 128
+      Environment:
+        Variables:
+          BUCKET_NAME: your-bucket-name
+      Policies:
+      - Statement:
+        - Effect: Allow
+          Action: s3:GetObject
+          Resource: arn:aws:s3:::your-bucket-name/statements/*
+      Events:
+        GetStatementApi:
+          Type: HttpApi
+          Properties:
+            Path: /statement
+            Method: get
+            Auth:
+              Authorizer: NONE
+    Metadata:
+      SamResourceId: GetStatementFunction
