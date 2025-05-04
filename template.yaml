@@ -1,6 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Secure Banking App - GetStatementLambda
+
 Globals:
   Function:
     Timeout: 10
@@ -13,7 +14,7 @@ Resources:
     Properties:
       FunctionName: GetStatementLambda
       Handler: app.lambda_handler
-      CodeUri: GetStatementFunction/
+      CodeUri: GetStatementLambda/
       MemorySize: 128
       Environment:
         Variables:
@@ -29,6 +30,3 @@ Resources:
           Properties:
             Path: /statement
             Method: get
-            Auth:
-              Authorizer: NONE   # Replace with Cognito later
-
