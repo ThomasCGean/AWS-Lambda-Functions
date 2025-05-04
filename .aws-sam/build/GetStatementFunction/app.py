@@ -3,45 +3,51 @@ import json
 import boto3
 import logging
 from botocore.client import Config
+from botocore.exceptions import ClientError
 
-# Explicitly use Signature Version 4 (SigV4)
+# Use Signature Version 4 explicitly
 s3 = boto3.client('s3', config=Config(signature_version='s3v4'))
 
-# Set bucket name from environment or fallback default
+# Set bucket name from environment or fallback
 BUCKET_NAME = os.environ.get('BUCKET_NAME', 'securestoragebankingdocumentsfinal')
 
-# Logger setup
+# Logging setup
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 def lambda_handler(event, context):
     """
-    AWS Lambda handler for generating a pre-signed URL to a bank statement PDF in S3.
-    
-    Expected input:
-        - event['requestContext']['authorizer']['claims']['sub']: user ID
-        - event['queryStringParameters']['month']: statement month (e.g., '2025-01')
-    
-    Returns:
-        - JSON with pre-signed URL (valid for 5 minutes)
+    Lambda handler to generate a pre-signed URL to a known S3 object.
     """
     try:
-        # Extract user ID and month from request
-        user_id = event.get('requestContext', {}).get('authorizer', {}).get('claims', {}).get('sub', 'demo-user')
-        month = event.get('queryStringParameters', {}).get('month', '2025-01')
+        # Hardcoded object key for testing
+        object_key = "statements/535-FinalExampleBankStatement.pdf"
+        logger.info(f"Requesting URL for object key: {object_key}")
 
-        # Construct S3 object key
-        object_key = f"statements/{user_id}-{month}.pdf"
+        # Check if the object exists
+        try:
+            s3.head_object(Bucket=BUCKET_NAME, Key=object_key)
+            logger.info("Confirmed object exists in S3.")
+        except ClientError as e:
+            if e.response['Error']['Code'] == '404':
+                logger.warning(f"Object not found: {object_key}")
+                return {
+                    "statusCode": 404,
+                    "body": json.dumps({"error": "Requested file does not exist in S3."}),
+                    "headers": {"Content-Type": "application/json"}
+                }
+            else:
+                logger.error("S3 head_object error", exc_info=True)
+                raise
 
-        # Generate pre-signed URL (valid for 5 minutes)
+        # Generate pre-signed URL (5-minute expiration)
         url = s3.generate_presigned_url(
             'get_object',
             Params={'Bucket': BUCKET_NAME, 'Key': object_key},
             ExpiresIn=300
         )
 
-        logger.info(f"Generated pre-signed URL for: {object_key}")
-        # Debugging (optional): print the full URL
+        logger.info("Successfully generated pre-signed URL.")
         print("Pre-signed URL:", url)
 
         return {
@@ -51,8 +57,9 @@ def lambda_handler(event, context):
         }
 
     except Exception as e:
-        logger.exception("Failed to generate pre-signed URL")
+        logger.exception("Unhandled exception during pre-signed URL generation.")
         return {
             "statusCode": 500,
-            "body": json.dumps({"error": str(e)})
+            "body": json.dumps({"error": str(e)}),
+            "headers": {"Content-Type": "application/json"}
         }

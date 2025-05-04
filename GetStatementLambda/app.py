@@ -48,8 +48,6 @@ def lambda_handler(event, context):
         )
 
         logger.info("Successfully generated pre-signed URL.")
-        print("Pre-signed URL:", url)
-
         return {
             "statusCode": 200,
             "body": json.dumps({"url": url}),
