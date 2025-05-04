@@ -15,19 +15,17 @@ Resources:
       MemorySize: 128
       Environment:
         Variables:
-          BUCKET_NAME: your-bucket-name
+          BUCKET_NAME: securestoragebankingdocumentsfinal
       Policies:
       - Statement:
         - Effect: Allow
           Action: s3:GetObject
-          Resource: arn:aws:s3:::your-bucket-name/statements/*
+          Resource: arn:aws:s3:::securestoragebankingdocumentsfinal/statements/*
       Events:
         GetStatementApi:
           Type: HttpApi
           Properties:
             Path: /statement
             Method: get
-            Auth:
-              Authorizer: NONE
     Metadata:
       SamResourceId: GetStatementFunction

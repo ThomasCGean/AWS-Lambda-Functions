@@ -1,0 +1,13 @@
+{
+    "requestContext": {
+      "authorizer": {
+        "claims": {
+          "sub": "user-123"
+        }
+      }
+    },
+    "queryStringParameters": {
+      "month": "2025-03"
+    }
+  }
+  
