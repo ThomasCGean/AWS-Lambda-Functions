@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Secure Banking App - GetStatementLambda
+Description: Secure Banking App - GetStatementLambda and GetUserProfileLambda
 Globals:
   Function:
     Timeout: 10
@@ -29,3 +29,27 @@ Resources:
             Method: get
     Metadata:
       SamResourceId: GetStatementFunction
+  GetUserProfileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: GetUserProfileLambda
+      Handler: app.lambda_handler
+      CodeUri: GetUserProfileFunction
+      MemorySize: 128
+      Environment:
+        Variables:
+          PROFILE_TABLE_NAME: SecureBankingCustomerProfilesFinal
+      Policies:
+      - Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:GetItem
+          Resource: arn:aws:dynamodb:*:*:table/SecureBankingCustomerProfilesFinal
+      Events:
+        GetUserProfileApi:
+          Type: HttpApi
+          Properties:
+            Path: /profile
+            Method: get
+    Metadata:
+      SamResourceId: GetUserProfileFunction

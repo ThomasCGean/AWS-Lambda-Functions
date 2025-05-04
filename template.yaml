@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Secure Banking App - GetStatementLambda
+Description: Secure Banking App - GetStatementLambda, GetUserProfileLambda, and UpdateUserProfileLambda
 
 Globals:
   Function:
@@ -30,3 +30,49 @@ Resources:
           Properties:
             Path: /statement
             Method: get
+
+  GetUserProfileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: GetUserProfileLambda
+      Handler: app.lambda_handler
+      CodeUri: GetUserProfileLambda/
+      MemorySize: 128
+      Environment:
+        Variables:
+          PROFILE_TABLE_NAME: SecureBankingCustomerProfilesFinal
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+              Resource: arn:aws:dynamodb:*:*:table/SecureBankingCustomerProfilesFinal
+      Events:
+        GetUserProfileApi:
+          Type: HttpApi
+          Properties:
+            Path: /profile
+            Method: get
+
+  UpdateUserProfileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: UpdateUserProfileLambda
+      Handler: app.lambda_handler
+      CodeUri: UpdateUserProfileLambda/
+      MemorySize: 128
+      Environment:
+        Variables:
+          PROFILE_TABLE_NAME: SecureBankingCustomerProfilesFinal
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:UpdateItem
+              Resource: arn:aws:dynamodb:*:*:table/SecureBankingCustomerProfilesFinal
+      Events:
+        UpdateUserProfileApi:
+          Type: HttpApi
+          Properties:
+            Path: /profile
+            Method: put
