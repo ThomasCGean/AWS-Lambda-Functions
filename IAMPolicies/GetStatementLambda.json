@@ -1,0 +1,20 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Action": [
+				"s3:GetObject"
+			],
+			"Resource": "arn:aws:s3:::securestoragebankingdocumentsfinal/statements/*"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"kms:Decrypt",
+				"kms:DescribeKey"
+			],
+			"Resource": "arn:aws:kms:us-east-1:388639405866:key/cacf673b-382d-4d03-bd8e-fed89ffe193a"
+		}
+	]
+}
