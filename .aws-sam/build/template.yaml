@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Secure Banking App - GetStatementLambda and GetUserProfileLambda
+Description: Secure Banking App - GetStatementLambda, GetUserProfileLambda, and UpdateUserProfileLambda
 Globals:
   Function:
     Timeout: 10
@@ -53,3 +53,27 @@ Resources:
             Method: get
     Metadata:
       SamResourceId: GetUserProfileFunction
+  UpdateUserProfileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: UpdateUserProfileLambda
+      Handler: app.lambda_handler
+      CodeUri: UpdateUserProfileFunction
+      MemorySize: 128
+      Environment:
+        Variables:
+          PROFILE_TABLE_NAME: SecureBankingCustomerProfilesFinal
+      Policies:
+      - Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:UpdateItem
+          Resource: arn:aws:dynamodb:*:*:table/SecureBankingCustomerProfilesFinal
+      Events:
+        UpdateUserProfileApi:
+          Type: HttpApi
+          Properties:
+            Path: /profile
+            Method: put
+    Metadata:
+      SamResourceId: UpdateUserProfileFunction
