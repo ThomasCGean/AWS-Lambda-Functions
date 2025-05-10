@@ -1,12 +1,13 @@
 {
-    "requestContext": {
-      "authorizer": {
-        "claims": {
-          "sub": "user-123"
-        }
+  "requestContext": {
+    "authorizer": {
+      "claims": {
+        "sub": "user-123456",
+        "email": "user-123456@user.com"
       }
-    },
-    "queryStringParameters": {
-      "month": "2025-03"
     }
+  },
+  "queryStringParameters": {
+    "month": "2025-03"
   }
+}

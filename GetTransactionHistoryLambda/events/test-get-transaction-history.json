@@ -1,5 +1,10 @@
 {
-    "queryStringParameters": {
-      "user_id": "user-123456"
+  "requestContext": {
+    "authorizer": {
+      "claims": {
+        "email": "user-123456@user.com"
+      }
     }
-  }
+  },
+  "body": "{\"amount\": 100.00, \"type\": \"deposit\", \"description\": \"Lambda console test deposit # 2\"}"
+}
