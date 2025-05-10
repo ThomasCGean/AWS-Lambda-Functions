@@ -1,4 +1,10 @@
 {
-    "body": "{\"user_id\": \"user-123456\", \"amount\": 125.00, \"description\": \"Transfer to savings\"}"
-  }
-  
+  "requestContext": {
+    "authorizer": {
+      "claims": {
+        "email": "user-123456@user.com"
+      }
+    }
+  },
+  "body": "{\"amount\": 50, \"type\": \"deposit\", \"description\": \"Lambda console test 3\"}"
+}

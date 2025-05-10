@@ -1,10 +1,10 @@
 {
-    "requestContext": {
-      "authorizer": {
-        "claims": {
-          "sub": "user-123456"
-        }
+  "requestContext": {
+    "authorizer": {
+      "claims": {
+        "sub": "84782478-b041-706b-332d-6f377aff5c20",
+        "email": "user-123456@user.com"
       }
     }
   }
-  
+}

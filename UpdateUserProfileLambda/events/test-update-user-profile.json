@@ -1,11 +1,10 @@
 {
-    "requestContext": {
-      "authorizer": {
-        "claims": {
-          "sub": "user-123456"
-        }
+  "requestContext": {
+    "authorizer": {
+      "claims": {
+        "sub": "user-123456"
       }
-    },
-    "body": "{\"FirstName\": \"AliceUpdated\", \"PhoneNumber\": \"+15557654321\"}"
-  }
-  
+    }
+  },
+  "body": "{\"FirstName\": \"AliceUpdated\", \"PhoneNumber\": \"+15557654321\"}"
+}
