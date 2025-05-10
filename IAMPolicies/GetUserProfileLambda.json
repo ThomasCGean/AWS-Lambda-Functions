@@ -2,13 +2,16 @@
     "Version": "2012-10-17",
     "Statement": [
         {
+            "Sid": "DynamoDBReadAccess",
             "Effect": "Allow",
             "Action": [
-                "s3:GetObject"
+                "dynamodb:GetItem",
+                "dynamodb:DescribeTable"
             ],
-            "Resource": "arn:aws:s3:::securestoragebankingdocumentsfinal/statements/*"
+            "Resource": "arn:aws:dynamodb:us-east-1:388639405866:table/SecureBankingCustomerProfilesFinal"
         },
         {
+            "Sid": "KMSDecryptForDynamoDB",
             "Effect": "Allow",
             "Action": [
                 "kms:Decrypt",
@@ -17,15 +20,14 @@
             "Resource": "arn:aws:kms:us-east-1:388639405866:key/cacf673b-382d-4d03-bd8e-fed89ffe193a"
         },
         {
+            "Sid": "AllowLogging",
             "Effect": "Allow",
             "Action": [
                 "logs:CreateLogGroup",
                 "logs:CreateLogStream",
                 "logs:PutLogEvents"
             ],
-            "Resource": [
-                "arn:aws:logs:us-east-1:388639405866:log-group:/aws/lambda/*"
-            ]
+            "Resource": "*"
         }
     ]
 }

@@ -1,0 +1,27 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "rds-data:ExecuteStatement",
+                "rds-data:BatchExecuteStatement"
+            ],
+            "Resource": "arn:aws:rds:us-east-1:388639405866:cluster:securebankingcustomerprofilesfinal"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "secretsmanager:GetSecretValue"
+            ],
+            "Resource": "arn:aws:secretsmanager:us-east-1:388639405866:secret:rds!cluster-b7e7d603-9fcb-48a6-9875-52969069d2c9-ODByop"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kms:Decrypt"
+            ],
+            "Resource": "arn:aws:kms:us-east-1:388639405866:key/cacf673b-382d-4d03-bd8e-fed89ffe193a"
+        }
+    ]
+}
