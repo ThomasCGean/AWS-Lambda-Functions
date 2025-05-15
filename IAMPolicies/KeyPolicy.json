@@ -1,0 +1,130 @@
+{
+	"Version": "2012-10-17",
+	"Id": "key-consolepolicy-3",
+	"Statement": [
+		{
+			"Sid": "EnableRootFullAccess",
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "arn:aws:iam::388639405866:root"
+			},
+			"Action": "kms:*",
+			"Resource": "*"
+		},
+		{
+			"Sid": "AllowKeyAdmins",
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": [
+					"arn:aws:iam::388639405866:root",
+					"arn:aws:iam::388639405866:user/ThomasGean"
+				]
+			},
+			"Action": [
+				"kms:Create*",
+				"kms:Describe*",
+				"kms:Enable*",
+				"kms:List*",
+				"kms:Put*",
+				"kms:Update*",
+				"kms:Revoke*",
+				"kms:Disable*",
+				"kms:Get*",
+				"kms:Delete*",
+				"kms:TagResource",
+				"kms:UntagResource",
+				"kms:ScheduleKeyDeletion",
+				"kms:CancelKeyDeletion",
+				"kms:RotateKeyOnDemand"
+			],
+			"Resource": "*"
+		},
+		{
+			"Sid": "AllowTransactionLambdaDecrypt",
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "arn:aws:iam::388639405866:role/FinalGetUserProfileRole"
+			},
+			"Action": [
+				"kms:Decrypt",
+				"kms:DescribeKey"
+			],
+			"Resource": "*"
+		},
+		{
+			"Sid": "AllowGetStatementLambdaS3Decrypt",
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "arn:aws:iam::388639405866:role/FinalGetStatementLambdaRole"
+			},
+			"Action": [
+				"kms:Decrypt",
+				"kms:DescribeKey"
+			],
+			"Resource": "*",
+			"Condition": {
+				"StringEquals": {
+					"kms:ViaService": "s3.us-east-1.amazonaws.com",
+					"kms:CallerAccount": "388639405866"
+				}
+			}
+		},
+		{
+			"Sid": "AllowGetUserProfileLambdaKMSAccess",
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "arn:aws:iam::388639405866:role/FinalGetUserProfileRole"
+			},
+			"Action": [
+				"kms:Decrypt",
+				"kms:DescribeKey"
+			],
+			"Resource": "*",
+			"Condition": {
+				"StringEquals": {
+					"kms:ViaService": "dynamodb.us-east-1.amazonaws.com",
+					"kms:CallerAccount": "388639405866"
+				}
+			}
+		},
+		{
+			"Sid": "AllowGetTransactionHistoryLambdaToUseKey",
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "arn:aws:iam::388639405866:role/FinalGetTransactionHistoryLambda"
+			},
+			"Action": "kms:Decrypt",
+			"Resource": "*"
+		},
+		{
+			"Sid": "AllowUpdateUserProfileLambdaKMSAccess",
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "arn:aws:iam::388639405866:role/FinalUpdateUserProfileRole"
+			},
+			"Action": [
+				"kms:Decrypt",
+				"kms:DescribeKey"
+			],
+			"Resource": "*",
+			"Condition": {
+				"StringEquals": {
+					"kms:ViaService": "dynamodb.us-east-1.amazonaws.com",
+					"kms:CallerAccount": "388639405866"
+				}
+			}
+		},
+		{
+			"Sid": "AllowGetStatementLambdaDirectDecrypt",
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "arn:aws:iam::388639405866:role/FinalGetStatementLambdaRole"
+			},
+			"Action": [
+				"kms:Decrypt",
+				"kms:DescribeKey"
+			],
+			"Resource": "*"
+		}
+	]
+}
